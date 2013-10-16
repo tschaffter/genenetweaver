@@ -1,0 +1,233 @@
+/** Place to dump some legacy code that we are not sure whether it might still be useful at some point */
+
+
+// ============================================================================
+// GeneNetwork.java
+
+/** Initialize the flag Gene.isTF_ for every gene */
+public void initializeTfFlags() {
+
+	// For every node, check whether it's a regulator
+	for (int n=0; n<nodes_.size(); n++) {
+		Gene gene = (Gene) nodes_.get(n); 
+		gene.setIsTf(false);
+		
+		for (int e=0; e<edges_.size(); e++) {
+			if (edges_.get(e).getSource() == gene) {
+				gene.setIsTf(true);
+				break;
+			}
+		}
+	}
+}
+
+
+// ============================================================================
+// Compendium.java
+
+	/** 
+	 * Remove genes that are in the gold standard but not in the microarray,
+	 * add genes that are in the microarray but not in the gold standard
+	 */
+	public void reconcileGoldStandardWithMicroarrayGenes(String filename) {
+		
+		log.info("");
+		log.info("Augmenting gold standard with genes from list " + filename);
+		
+		// If not gold standard was loaded, create an empty network
+		if (grn_ == null)
+			grn_ = new GeneNetwork();
+		
+		int numNodesBeforeReconciliation = grn_.getSize();
+		
+		ArrayList<String[]> microarray = null;
+		try {
+			microarray = Parser.readTSV(GnwSettings.getInstance().getURL(filename));
+		} catch (Exception e) {
+			GnwMain.error(e, "Could not load file " + filename);
+		}
+		ArrayList<String> goldStandard = grn_.getAllNodesLabels();
+
+		// Remove genes that are in the gold standard but not in the microarray
+		String removedGenes = "";
+		int numRemovedGenes = 0;
+		
+		for (int i=0; i<goldStandard.size(); i++) {
+			String gene = goldStandard.get(i);
+			boolean found = false;
+			
+			for (int j=0; j<microarray.size(); j++) {
+				if (gene.equals(microarray.get(j)[0])) {
+					found = true;
+					break;
+				}
+			}
+			
+			if (!found) {
+				grn_.removeNode(grn_.getNode(gene));
+				removedGenes = removedGenes + gene + " ";
+				numRemovedGenes++;
+			}
+		}
+		
+		log.info(numRemovedGenes + " genes have been removed (present in gold standard but not in microarray)");
+		//log.info(removedGenes);
+		
+		// Add genes that are in the microarray but not in the gold standard
+		String addedGenes = "";
+		int numAddedGenes = 0;
+		
+		for (int i=0; i<microarray.size(); i++) {
+			String gene = microarray.get(i)[0];
+			
+			if (!grn_.containsNode(gene)) {
+				Gene newGene = new HillGene(grn_);
+				newGene.setLabel(gene);
+				grn_.addNode(newGene);
+				addedGenes = addedGenes + gene + " ";
+				numAddedGenes++;
+			}
+		}
+		log.info(numAddedGenes + " genes have been added (present in microarray but not in gold standard)");
+		//log.info(addedGenes);
+
+		assert grn_.getSize() == numNodesBeforeReconciliation - numRemovedGenes + numAddedGenes;
+		assert grn_.getSize() == microarray.size();
+	}
+
+
+	// ----------------------------------------------------------------------------
+
+	/** Mark all the genes in the given TF list as TFs */
+	public void reconcileTfListWithGoldStandard(String filename) {
+		
+		log.info("");
+		log.info("Augmenting gold standard with TFs from list " + filename);
+		
+		//ArrayList<String[]> augmentedTfList = null;
+		ArrayList<String[]> tfList = null;
+		
+		try {
+			tfList = Parser.readTSV(GnwSettings.getInstance().getURL(filename));
+		} catch (Exception e) {
+			GnwMain.error(e, "Could not load file " + filename);
+		}
+
+		String tfsNotInList = "";
+		int numTfsNotInList = 0;
+		
+		for (int g=0; g<grn_.getSize(); g++) {
+			Gene gene = grn_.getGene(g);
+			boolean isInList = false;
+			
+			// Mark it as a TF if it's in the list
+			for (int i=0; i<tfList.size(); i++) {
+				if (tfList.get(i)[0].equals(gene.getLabel())) {
+					gene.setIsTf(true);
+					isInList = true;
+					break;
+				}
+			}
+			// Count those that are regulators in the gold standard but are not in the list
+			if (gene.getIsTf() && !isInList) {
+				tfsNotInList = tfsNotInList + gene.getLabel() + " ";
+				numTfsNotInList++;
+			}
+		}
+		
+		log.info(numTfsNotInList + " regulators of the gold standard were not in the list of TFs");
+		//log.info(tfsNotInList);
+		log.info("");
+		
+		// Count the number of TFs
+		int numTfs = 0;
+		for (int g=0; g<grn_.getSize(); g++)
+			if (grn_.getGene(g).getIsTf())
+				numTfs++;
+		assert numTfs == tfList.size() + numTfsNotInList; 
+	}
+
+	
+	// ----------------------------------------------------------------------------
+
+/** Add the perturbation variable and level to the static map */
+private void addPerturbationToList(ExperimentDefinition def) {
+	
+	String perturbationVariable = def.getPerturbationVariable();
+	// Return if this definition doesn't have a perturbation variable
+	if (perturbationVariable.equals(""))
+		return;
+	
+	double level = def.getPerturbationLevel();
+	
+	// TODO: if it's already there, we have to somehow remember this level,
+	// because we'll have to scale the perturbation by the max level or something.
+	// I guess perturbation levels will be normalized to max 1.
+	// If it's not yet there, we'll have to create a new perturbation
+	if (!perturbationList_.containsKey(perturbationVariable))
+		perturbationList_.put(perturbationVariable, null);
+
+}
+
+
+// ----------------------------------------------------------------------------
+
+/** Add the experiment to the condition map */
+private void addConditionToList(Experiment exp) {
+	
+	int batchId = exp.getDefinition().getBatchId();
+	int condition = exp.getDefinition().getBatchCondition();
+	
+	if (condition > 9)
+		throw new RuntimeException("In the current implementation there can be only up to 9 conditions per batch");
+	
+	//int key = 10*batchId + condition;
+	int[] key = new int[2];
+	key[0] = batchId;
+	key[1] = condition;
+	
+	if (conditionList_.containsKey(key)) {
+		conditionList_.get(key).add(exp);
+	
+	} else {
+		ArrayList<Experiment> list = new ArrayList<Experiment>();
+		list.add(exp);
+		conditionList_.put(key, list);
+	}
+}
+
+
+// ----------------------------------------------------------------------------
+
+/**
+ * Shuffle the entries of the linked map
+ */
+@SuppressWarnings("unchecked")
+private void shuffleLinkedHashMap(LinkedHashMap map) {
+
+	LinkedHashMap originalMap = (LinkedHashMap) map.clone();
+	
+	// empty the map, then reinsert its elements in random order
+	map.clear();
+	Uniform uni = GnwSettings.getInstance().getUniformDistribution();
+	
+	while (originalMap.size() > 0) {
+		int k = uni.nextIntFromTo(0, originalMap.size()-1);
+
+		// Skip to the k'th key
+		Iterator iter = originalMap.keySet().iterator();
+		for (int i=0; i<k; i++)
+			iter.next();
+
+		// The k'th key
+		Object key = iter.next();
+		
+		// Insert to the shuffled map and remove from the original map
+		map.put(key, originalMap.get(key));
+		originalMap.remove(key);
+	}
+}
+	
+	
+
+	

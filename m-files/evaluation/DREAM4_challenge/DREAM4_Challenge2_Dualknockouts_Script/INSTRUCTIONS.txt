@@ -1,0 +1,12 @@
+Navigate to the matlab directory in MATLAB.
+
+Run:
+go.m
+
+Put your predictions in 
+INPUT/my_predictions
+
+Run:
+go_all.m
+
+----------

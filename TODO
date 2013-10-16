@@ -1,0 +1,11 @@
+TODO
+====
+
+[-] Design interface for loading and defining perturbations in a general manner (next version)
+[-] Consider integrating TimeSeriesExperiment and SteadyStateExperiment. Maybe time-series could be a subclass of steady-state.
+[-] Allow user to choose to save only time-series when applying perturbation or only when removing perturbation
+[-] Save a "real" SBML that can be opened with other simulation programs
+[-] User should be able to specify the number of multifactorial experiments
+[-] Create a dialogue for generation of kinetic models and give user control over basic parameters (e.g. how much independent vs synergism)
+[-] Remove redundance of few logger (imod, etc.) -> logs show up 2x (1x child and 1x parent)
+[-] Write unit tests

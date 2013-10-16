@@ -1,0 +1,12 @@
+<center>Schaffter T., Marbach D., and Floreano D. (2011) <b>GeneNetWeaver: <i>In silico</i> benchmark generation and performance profiling of network inference methods</b> Bioinformatics. <i>To appear.</i></center>
+Tip: GNW has a <b>command-line interface</b> and a <b>standalone version</b> (see Sect. 8 of the tutorial)</b>
+Tip: use the <b>Settings</b> tab to easily access all parameters of GNW (see Sect. 7 of the tutorial)
+Tip: open the <b>Console</b> for detailed information about the ongoing process
+Tip: <b>tooltips</b> are associated with most elements of the dialogs, hold your mouse over any element to see the tooltip
+<b>Desktop keyboard shortcuts</b>: press <i>ENTER</i> for options, <i>E</i> for subnetwork Extraction, <i>V</i> for Visualization, <i>K</i> to generate Kinetic models, <i>D</i> to generate Datasets; press <i>R</i> to Rename, <i>O</i> to Open, and <i>S</i> to save networks, ...
+Tip: you can select <b>multiple networks</b> at the same time for <b>deletion, export, and generation of dynamical gene network models</b>
+Tip: right-click items on the desktop to show their <i>options menu</i>, press <i>ESCAPE</i> to close windows
+Tip: use several tabs in the evaluation window to compare the performance of different inference methods 
+Tip: in the evaluation window, rename tab titles (double-click on them) and GNW may automatically associate network predictions to gold standards
+Tip: cut, copy, and paste in Java applications with <i>CTRL-X</i>, <i>CTRL-C</i>, and <i>CTRL-V</i> (OS independent)
+Tip: avoid <i>white space</i> in the names of desktop elements (networks, forders, etc.) and in filenames (replace ' ' by '_')

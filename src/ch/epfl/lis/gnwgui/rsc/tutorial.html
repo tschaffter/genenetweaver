@@ -1,0 +1,127 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <style></style>
+  </head>
+  <body>
+
+<!--<font color="#084073" size="5"><b>Generating a Benchmark with GNW</b></font>
+<br><br>-->
+<b>Before you start</b>
+<br>
+Please visit our website for a short introduction to GNW and our research:
+<br>
+<a href="http://gnw.sourceforge.net">gnw.sourceforge.net</a>
+<br><br>
+<b>Goal of the tutorial</b>
+<br>
+Generate benchmarks for gene network inference similar to the DREAM3 and DREAM4 <i>in silico</i> network challenges, and evaluate the predictions of your method.
+<br><br>
+<b>Further information</b>
+<br>
+Tooltips are associated with most elements of the dialogs, hold your mouse pointer over any element for a second to see the tooltip. See also the <i>Help</i> tab in the toolbar below.
+<br>
+
+<br><br><br>
+
+<font color="#084073" size="5"><b>1. Opening a source network structure</b></font>
+<br><br>
+<b>Automatically loaded networks: <i>Example</i>, <i>Ecoli</i>, and <i>Yeast</i></b>
+<br>
+Three network structures are automatically loaded when you start GNW: <i>Example</i>, <i>Ecoli</i>, and <i>Yeast</i>. You can hold the mouse pointer over any of these networks and you will see a tooltip with information on that network. <i>Ecoli</i> and <i>Yeast</i> are the transcriptional regulatory networks of these two organisms. The <i>Ecoli</i> network  is signed, the <i>Yeast</i> network is not signed. See the user guide for more detailed information on these networks. If you want to use one of these networks for the rest of the tutorial, you can directly jump to step 2.
+<br><br>
+<b>Opening a network structure</b>
+<br>
+You can open your own network structures in TSV, GML, or DOT format (see the user guide for a description of these formats). Double-click the <i>Open</i> icon in the <i>Networks</i> tab (or type <i>O</i>) and select your file.
+
+<br><br><br>
+
+<font color="#084073" size="5"><b>2. Extracting subnetworks from the source network</b></font>
+<br><br>
+Double-click the <i>Ecoli</i> network. Select <i>Subnetwork Extraction</i> (or type <i>E</i>). If you want, you can specify a name for your subnets. Lets extract 3 modules of size 50. Set <i>Size of subnets</i> = 50 and <i>Number of subnets</i> = 3. Leave the other options at their default value. Read the tooltips for further information.
+<br><br>
+Click <i>Extract</i> to start module extraction. The subnetworks will appear in the <i>Networks</i> tab.
+
+<br><br><br>
+
+<font color="#084073" size="5"><b>3. Visualizing the extracted subnetworks</b></font>
+<br><br>
+Click on a source network to see its subnetworks. Double-click a subnetwork. Select <i>Visualization</i> (or type <i>V</i>).
+<br><br>
+Click and drag to move the graph to the center of the window. Use the scroll wheel to zoom in and out. Play with the checkboxes to show the gene names and the sign of the edges. In the drop-down menu of the visualization controls, select <i>Move nodes</i>. Pick a node and move it around. Click <i>Display help</i> for even more fun.
+<br><br>
+Click <i>Export as image</i> or use <i>ALT+P</i> to save your beautiful graph.
+
+<br><br><br>
+
+<font color="#084073" size="5"><b>4. Generating a kinetic model</b></font>
+<br><br>
+Double-click a subnetwork and select <i>Generate Kinetic Model</i> to create a dynamical model of the gene network. In the dialog, press "Yes" to remove autoregulatory interactions (see the user guide for an explanation why we recommend this).
+<br><br>
+The subnetwork has turned orange in the <i>Networks</i> tab to indicate that it is now a kinetic network model that can be used to generate datasets.
+
+<br><br><br>
+
+<font color="#084073" size="5"><b>5. Generating datasets</b></font>
+<br><br>
+Double-click a kinetic network model and select <i>Generate Datasets</i> (or type <i>D</i>). Select whether to use Ordinary Differential Equations (ODEs) or Stochastic Differential Equations (SDEs). Select the type of experiments that you want to simulate and the type of noise that you want to add. Select an output directory, where all files of this <i>in silico</i> benchmark will be saved (the datasets with and without noise, the network structure, the kinetic network model, etc).
+You may also just click on <i>DREAM4 settings</i> to set the parameter values that were used to generate the DREAM4 challenges.
+<br><br>
+Click <i>Run</i> to simulate the experiments and save all files of the benchmark. You may want to have a look at the console (click the <i>Console</i> tab) to monitor the progress and check for potential error messages.
+
+<br><br><br>
+
+<font color="#084073" size="5"><b>6. Evaluating network predictions</b></font>
+<br><br>
+Use the <i>Evaluation</i> panel to evaluate the predictions of one or several inference methods using precision-recall and ROC curves and/or network motif analysis (refer to the user manual and our papers for a description of these analyses). All results are saved in a text file (XML format) and optionally also in a PDF report that includes graphical plots. For either type of analysis, you first have to specify the gold standards and the network predictions.
+<br><br>
+First, specify a gold standard using the corresponding drop-down menu (gold standards must be previously loaded on the <i>Network desktop</i>). Use the '+' button to add lines if you are evaluating predictions for several gold standards. Next, click <i>Browse</i> to select the folder where the network predictions are located (this folder is recursively searched for prediction files). GNW tries to automatically match predictions to gold standards based on similarity of the corresponding file names. If the automatic matching doesn't work, select the predictions manually using the drop-down menus. You may also specify a name for the inference method by double-clicking the title of the tab (named <i>InferenceMethod1</i> by default). If you are evaluating several inference methods, create a new tab or duplicate existing tabs by clicking on the corresponding icons next to the tab titles on top (create a separate tab for each inference method that is being evaluated).
+
+<br><br><br>
+
+<font color="#084073" size="5"><b>7. Settings / configuration files</b></font>
+<br><br>
+All parameters that can be specified using the Graphical User Interface (GUI) can also be defined in a settings file. The advantage of using a settings file is that it can be saved together with a benchmark. Later, it's easy to verify which parameter values have been used to generate that benchmark or to generate additional benchmarks of the same type.
+<br><br>
+Settings files can be loaded from the GUI. It's also possible to load a settings file automatically at the startup of GNW. The later file must be named <i>settings.txt</i> and be placed into the folder <i>gnw/</i> of the user's home directory. For the most common platforms:
+<ul>
+<li><b>Windows</b> C:\Documents and Settings\<i>user_name</i>\gnw\settings.txt</li>
+<li><b>Mac</b> /Users/<i>user_name</i>/gnw/settings.txt</li>
+<li><b>Linux</b> /home/<i>user_name</i>/gnw/settings.txt</li>
+</ul>
+Settings files can be edited and saved from the GUI or using any text editor.
+After loading a settings file, the loaded parameter values will be used as default values in all dialogs.
+
+<br><br><br>
+
+<font color="#084073" size="5"><b>8. Command-line interface and standalone version</b></font>
+<br><br>
+Since version 3.0, it is possible to run GNW using command line arguments directly from the console or terminal. First, download the standalone version of GNW from the project website. Then place yourself in the same directory as <em>gnw-standalone.jar</em> and execute the following command to display the help menu:
+<br><br>
+<b>$ java -jar gnw-standalone.jar --help</b>
+<br><br>
+The help menu lists and describes all command-line arguments. In addition, the help displays examples of commands to:
+<ul>
+<li>Extract subnetworks from a source network</li>
+<li>Generate kinetic models</li>
+<li>Generate datasets</li>
+<li>Evaluate network predictions</li>
+<li>Convert networks (between TSV, DOT, GML, and SBML formats)</li>
+</ul>
+The specification of a GNW settings file is required for most operations. A default settings file can be downloaded from the GNW website or you can export the default settings file from GNW.
+<br><br>
+It is also possible to run a standalone version of GNW with the GUI:
+<br><br>
+<b>$ java -jar gnw-standalone.jar</b>
+<br>
+<b>$ java -jar gnw-standalone.jar -c settings.txt</b>
+<br><br>
+Note that, in contrast to the Java WebStart version, the standalone version cannot update itself automatically when a new version of GNW is released.
+
+<br><br><br>
+That's it! See the user guide for a more detailed description of GNW.
+<br><br>
+
+</body>
+</html>
