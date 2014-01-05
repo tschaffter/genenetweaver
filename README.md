@@ -7,4 +7,4 @@ We have developed novel approaches for the generation of biologically plausible 
 
 GNW participates to an international effort to assess biological network inference by providing tools that helped experimenters to evaluate the accuracy of thousands of gene network predictions. Moreover, we have used GNW to organize the [international DREAM3, DREAM4 and DREAM5 competitions](http://tschaffter.ch/projects/gnw/#DREAM).
 
-More detailed information are available at http://tschaffter.ch/projects/gnw
+More detailed information are available at http://tschaffter.ch/projects/gnw.
