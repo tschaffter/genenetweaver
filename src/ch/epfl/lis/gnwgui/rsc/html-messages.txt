@@ -1,4 +1,4 @@
-<center>Schaffter T., Marbach D., and Floreano D. <b>GeneNetWeaver: <i>In silico</i> benchmark generation and performance profiling of network inference methods</b>. Bioinformatics, vol. 27, num. 16, p. 2263-2270, 2011.</center>
+<center>T Schaffter, D Marbach, D Floreano. GeneNetWeaver: <i>in silico</i> benchmark generation and performance profiling of network inference methods. <i>Bioinformatics</i>, 27(16):2263-2270, 2011.</center>
 Tip: GNW has a <b>command-line interface</b> and a <b>standalone version</b> (see Sect. 8 of the tutorial)</b>
 Tip: use the <b>Settings</b> tab to easily access all parameters of GNW (see Sect. 7 of the tutorial)
 Tip: open the <b>Console</b> for detailed information about the ongoing process

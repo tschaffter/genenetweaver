@@ -102,7 +102,7 @@ public class Predictions extends PredictionsPanel {
 	String datareport_ = null;
 	
 	/** Server specific settings */
-	private static String serverAddress_ = "http://lisythaq.epfl.ch/gnw/";
+	private static String serverAddress_ = "http://lissrv3.epfl.ch/gnw/"; // was "http://lisythaq.epfl.ch/gnw/", http://128.178.131.231/gnw/
 	private static String serverCheckAddress_ = "http://www.google.com";
 	
 	/** Logger for this class */
@@ -415,8 +415,9 @@ public class Predictions extends PredictionsPanel {
 			String id = null;
 
 			if (resEntity != null) {
-				if ( response.getStatusLine().getStatusCode() != 200) 
-					throw new Exception("Unable to upload data file to GNR server!");
+				int status = response.getStatusLine().getStatusCode();
+				if ( status != 200) 
+					throw new Exception("Unable to upload data file to GNR server (status code: " + status + ")!");
 				id = convertStreamToString(resEntity.getContent()).trim();
 				resEntity.consumeContent();
 
