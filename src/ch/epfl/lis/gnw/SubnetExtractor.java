@@ -566,7 +566,7 @@ public class SubnetExtractor {
 			Double d0 = (Double) base_map.get(arg0);
 			Double d1 = (Double) base_map.get(arg1);
 
-			if (d0 + 1e-12 > d1 && d0 - 1e-12 < d1)
+			if (d0 + 1e-12 > d1 && d0 - 1e-12 < d1) // doesn't violate general contract
 				return uniform_.nextBoolean() ? 1 : -1;
 			else if (d0 < d1)
 				return 1;

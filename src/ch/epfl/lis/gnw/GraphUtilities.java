@@ -329,14 +329,12 @@ public class GraphUtilities {
 		public int compare(int[] a, int[] b) {
 			//if (a[2] == b[2])
 				//return uniform_.nextBoolean() ? 1 : -1;
-			if (a[2] <= b[2])
+			if (a[2] < b[2])
 				return 1;
 			else if (a[2] > b[2])
 				return -1;
-			else {
-				assert false;
+			else
 				return 0;
-			}
 		}
 	}
 	

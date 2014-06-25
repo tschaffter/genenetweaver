@@ -88,7 +88,7 @@ public class GnwGui extends GnwGuiWindow {
 		"ch.epfl.lis.imod", 
 		"ch.epfl.lis.networks", 
 		"ch.epfl.lis.networks.ios",
-	"ch.epfl.lis.sde"};
+		"ch.epfl.lis.sde"};
 
 	/** Splash Screen */
 	private static SplashScreen splashScreen_;

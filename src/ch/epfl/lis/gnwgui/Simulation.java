@@ -671,7 +671,7 @@ public class Simulation extends SimulationWindow {
 			{
 				log_.log(Level.WARNING, e.getMessage(), e);
 				JOptionPane.showMessageDialog(new Frame(), "Illegal argument, see console for details.", "GNW message", JOptionPane.WARNING_MESSAGE);
-				log_.log(Level.INFO, "Potential orkaround: gene names must contain at least one char (e.g. \"5\" is not a valid gene name, but \"G5\" is)");
+				log_.log(Level.INFO, "Potential workaround: gene names must contain at least one char (e.g. \"5\" is not a valid gene name, but \"G5\" is)");
 				finalizeAfterFail();
 			}
 			catch (CancelException e)
