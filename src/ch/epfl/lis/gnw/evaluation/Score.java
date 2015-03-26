@@ -3,12 +3,14 @@ package ch.epfl.lis.gnw.evaluation;
 import java.awt.Point;
 import java.text.DecimalFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 
 
@@ -187,8 +189,9 @@ public class Score extends NetworkPrediction {
 	}
 	
 	double roundTwoDecimals(double d) {
-		DecimalFormat twoDForm = new DecimalFormat("#.##");
-		return Double.valueOf(twoDForm.format(d));
+//		DecimalFormat twoDForm = new DecimalFormat("#.##");
+//		return Double.valueOf(twoDForm.format(d));
+		return Double.valueOf(String.format(Locale.ENGLISH, "%.2f", d));
 	}
 	
 	public double getAUPR() { return AUPR_; }

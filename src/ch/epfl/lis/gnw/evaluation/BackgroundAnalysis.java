@@ -86,13 +86,16 @@ public class BackgroundAnalysis {
     	// Compute the medians
     	medianTrueEdges_ = MathUtils.median(trueEdgesCorrected_);
     	medianBackEdges_ = MathUtils.median(backEdgesCorrected_);
-    	medianAbsentEdges_ = MathUtils.median(absentEdgesCorrected_);
+    	// 2015-03-26: To account the case where there are not absent edges
+    	if (absentEdgesCorrected_.size() < 1)
+    		medianAbsentEdges_ = 0.5;
+    	else
+    		medianAbsentEdges_ = MathUtils.median(absentEdgesCorrected_);
 
     	// Convert to arrays
 		trueEdgesCorrectedArray_ = MathUtils.toArray(trueEdgesCorrected_);
 		backEdgesCorrectedArray_ = MathUtils.toArray(backEdgesCorrected_);
 		absentEdgesCorrectedArray_ = MathUtils.toArray(absentEdgesCorrected_);
-
     }
 
 

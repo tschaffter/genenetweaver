@@ -65,7 +65,7 @@ public class GnwSettings {
 
 	// VARIOUS
 	/** Current version of GNW */
-	private String gnwVersion_ = "3.1.1 Beta";
+	private String gnwVersion_ = "3.1.2 Beta";
 	/** Seed for the random number generator. Set to -1 to use current time */
 	private int randomSeed_ = -1;
 	/** Default output directory to save stuff */

@@ -60,6 +60,9 @@ public class MathUtils {
 	/** Return the median */
 	static public double median(ArrayList<Double> v) {
 		
+		if (v.size() < 1)
+			throw new IllegalArgumentException("The vector does not contain any elements");
+		
 		Collections.sort(v);
 		
 		if (v.size() % 2 == 1)
@@ -100,6 +103,9 @@ public class MathUtils {
      */
     static public void correctRanks(ArrayList<Double> ranks) {
 
+    	if (ranks.size() < 1)
+    		return;
+    	
     	double min = min(ranks);
         
         while (min < -1e-12) {  

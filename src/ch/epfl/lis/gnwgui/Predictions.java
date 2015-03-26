@@ -102,7 +102,7 @@ public class Predictions extends PredictionsPanel {
 	String datareport_ = null;
 	
 	/** Server specific settings */
-	private static String serverAddress_ = "http://lissrv3.epfl.ch/gnw/"; // was "http://lisythaq.epfl.ch/gnw/", http://128.178.131.231/gnw/
+	private static String serverAddress_ = "http://tschaffter.ddns.net/gnr/"; // was "http://lisythaq.epfl.ch/gnw/", http://128.178.131.231/gnw/, http://lissrv3.epfl.ch/gnw/
 	private static String serverCheckAddress_ = "http://www.google.com";
 	
 	/** Logger for this class */
