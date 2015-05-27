@@ -42,10 +42,9 @@ import ch.epfl.lis.utilities.images.HighlightableImage;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.awt.GradientPaint;
@@ -59,7 +58,7 @@ import java.awt.Dimension;
 
 /**
  * Interactive element iElement.
- *   
+ * 
  * @author Thomas Schaffter (firstname.name@gmail.com)
  */
 abstract public class IElement extends JLabel
@@ -236,7 +235,8 @@ abstract public class IElement extends JLabel
 
 	protected void reportException(Exception ex)
 	{
-		log_.log(Level.SEVERE, ex.toString(), ex);
+//		ex.printStackTrace();
+		log_.log(Level.SEVERE, ex.getMessage(), ex);
 	}
 
 	// ----------------------------------------------------------------------------
@@ -477,11 +477,20 @@ abstract public class IElement extends JLabel
 	 * 
 	 * @author Thomas Schaffter (firstname.name@gmail.com)
 	 */
-	private class MyMouseAdapter extends MouseAdapter
+	//
+	// 2015.05.27: It seems that the method mouseClicked(event) is not called anymore
+	// since Java 1.8. To quickly fix the issue, mouseClickedMethod() is called
+	// if mouseReleased() is called less than MOUSE_CLICKED_TIME_WINDOW_IN_MS
+	// after that mousePressed() is called.
+	//
+	private class MyMouseAdapter implements MouseListener //  extends MouseAdapter
 	{
+		private static final long MOUSE_CLICKED_TIME_WINDOW_IN_MS = 500;
+		
 		/** The item this listener is associated with. */
 		IElement item;
 		
+		private long t0;
 		
 		// ============================================================================
 		// PUBLIC METHODS
@@ -498,8 +507,15 @@ abstract public class IElement extends JLabel
 		 * Called when the user clicks on the CddItem.
 		 * A click means "pressed-and-released"
 		 */
+		@Override
 		public void mouseClicked(MouseEvent ev)
 		{	
+			mouseClickedMethod(ev);
+		}
+		
+		
+		private void mouseClickedMethod(MouseEvent ev) {
+			
 			if ( ev.isShiftDown() || ev.isControlDown()) 
 				return;
 			
@@ -597,7 +613,6 @@ abstract public class IElement extends JLabel
 			leave();
 			mouseOverIcon_ = false;
 			repaint();
-
 		}
 		
 		// ----------------------------------------------------------------------------
@@ -605,6 +620,8 @@ abstract public class IElement extends JLabel
 		/** Called when the mouse is pressed down. */
 		public void mousePressed( MouseEvent ev )
 		{	
+			t0 = System.currentTimeMillis();
+			
 			if ( ev.isShiftDown() || ev.isControlDown())
 			{
 				if ( selected_) 
@@ -629,6 +646,7 @@ abstract public class IElement extends JLabel
 			}
 
 			// Add the mouse listener created, or already existing.
+			IElement.this.removeMouseMotionListener(mml);
 			IElement.this.addMouseMotionListener(mml);
 		}
 
@@ -654,6 +672,12 @@ abstract public class IElement extends JLabel
 		/** Called when the mouse button is released. */
 		public void mouseReleased(MouseEvent ev)
 		{
+			// simulates mouse click event
+			if (System.currentTimeMillis() - t0 < MOUSE_CLICKED_TIME_WINDOW_IN_MS) {
+				mouseClickedMethod(ev);
+				return;
+			}
+			
 			if( ev.isShiftDown() || ev.isControlDown())
 				return;
 			
